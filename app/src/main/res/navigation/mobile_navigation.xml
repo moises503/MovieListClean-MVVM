@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_top_rated_movies">
+
+    <fragment
+        android:id="@+id/navigation_next_movies"
+        android:name="com.moises.movielist.framework.ui.nextmovies.NextMoviesFragment"
+        android:label="@string/next_movies"
+        tools:layout="@layout/fragment_next_movies" />
+
+    <fragment
+        android:id="@+id/navigation_popular_movies"
+        android:name="com.moises.movielist.framework.ui.popular.PopularMoviesFragment"
+        android:label="@string/popular_movies"
+        tools:layout="@layout/fragment_popular_movies" />
+
+    <fragment
+        android:id="@+id/navigation_top_rated_movies"
+        android:name="com.moises.movielist.framework.ui.toprated.TopRatedMoviesFragment"
+        android:label="@string/top_rated_movies"
+        tools:layout="@layout/fragment_top_rated_movies" />
+</navigation>

@@ -8,7 +8,7 @@ import com.moises.movielist.domain.popular.repository.PopularMoviesRepository
 class GetAllPopularMoviesUseCase(private val popularMoviesRepository: PopularMoviesRepository) :
     UseCase<Unit, List<Movie>>() {
 
-    override fun execute(params: Unit?): List<Movie> {
+    override suspend fun executeWithCoroutines(params: Unit?): List<Movie> {
         params?.let {
             return popularMoviesRepository.getAllPopularMovies()
         } ?: let {

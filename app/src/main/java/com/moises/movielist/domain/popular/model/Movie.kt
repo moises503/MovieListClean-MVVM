@@ -1,6 +1,9 @@
 package com.moises.movielist.domain.popular.model
 
 data class Movie(
-    val name : String,
-    val rated : Double
+    val id : Int,
+    val title : String,
+    val overview : String,
+    val image : String,
+    val popularity : Double
 )

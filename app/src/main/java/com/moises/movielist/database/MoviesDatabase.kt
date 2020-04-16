@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.moises.movielist.database.dao.PopularMoviesDao
 import com.moises.movielist.database.entities.PopularMoviesEntity
 
 @Database(entities = [PopularMoviesEntity::class], version = 1)
@@ -17,4 +18,6 @@ abstract class MoviesDatabase : RoomDatabase() {
             ).build()
         }
     }
+
+    abstract fun popularMoviesDao() : PopularMoviesDao
 }

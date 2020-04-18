@@ -8,11 +8,13 @@ import com.moises.movielist.domain.toprated.repository.TopratedMoviesRepository
 class GetAllTopratedMoviesUseCase(private val topratedMoviesRepository: TopratedMoviesRepository) :
     UseCase<Unit, List<Movie>>() {
 
-    override fun execute(params: Unit?): List<Movie> {
+    override suspend fun executeWithCoroutines (params: Unit?): List<Movie> {
         params?.let {
             return topratedMoviesRepository.getAllTopratedMovies()
         } ?: let {
             throw NullParametersException()
         }
     }
+
+
 }

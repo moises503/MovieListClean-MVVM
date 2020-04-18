@@ -7,16 +7,24 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.moises.movielist.BR
 import com.moises.movielist.R
 import com.moises.movielist.core.arch.ScreenState
 import com.moises.movielist.domain.popular.model.Movie
+import com.moises.movielist.framework.GenericDataBindingAdapter
 import com.moises.movielist.framework.presentation.popular.PopularMoviesScreenState
 import com.moises.movielist.framework.presentation.popular.PopularMoviesViewModel
+import kotlinx.android.synthetic.main.fragment_popular_movies.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import uabjo.drti.eleccion.modules.common.framework.DataBindingVariables
 
 class PopularMoviesFragment : Fragment() {
 
     private val popularMoviesViewModel: PopularMoviesViewModel by viewModel()
+    private lateinit var popularMoviesAdapter: GenericDataBindingAdapter<Movie>
+    private var popularmovies : MutableList<Movie> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,13 +36,26 @@ class PopularMoviesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         popularMoviesViewModel.popularMoviesScreenState.observe(
             viewLifecycleOwner,
             Observer { screenState ->
                 renderScreenState(screenState)
             })
+            recyclerBind()
     }
 
+    fun recyclerBind() {
+        popularMoviesAdapter =
+            GenericDataBindingAdapter(BR.movie,
+                R.layout.popular_movie_element)
+        rvPopularMovies?.apply {
+            adapter = popularMoviesAdapter
+
+            layoutManager = GridLayoutManager(context,2)
+            setHasFixedSize(true)
+        }
+    }
     private fun renderScreenState(screenState: ScreenState<PopularMoviesScreenState>) {
         when (screenState) {
             ScreenState.Loading -> showLoader()
@@ -51,11 +72,11 @@ class PopularMoviesFragment : Fragment() {
     }
 
     private fun showLoader() {
-        showError("Mostrando loader")
+        pbPopularMovies.visibility=View.VISIBLE
     }
 
     private fun hideLoader() {
-        showError("Oculando loader")
+        pbPopularMovies.visibility=View.GONE
     }
 
     private fun showError(message : String){
@@ -63,6 +84,14 @@ class PopularMoviesFragment : Fragment() {
     }
 
     private fun showMovies(list: List<Movie>) {
-        Toast.makeText(requireContext(), "Total de películas: ${list.size}", Toast.LENGTH_LONG).show()
+        popularmovies.clear()
+        popularmovies.addAll(list.toMutableList())
+
+        popularMoviesAdapter.setItems(
+            popularmovies
+        )
+        //Toast.makeText(requireContext(), "Total de películas: ${list.size}", Toast.LENGTH_LONG).show()
+
+
     }
 }

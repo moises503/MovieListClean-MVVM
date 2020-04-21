@@ -1,6 +1,8 @@
-package com.moises.movielist.data.popular.datasource.local
+package com.moises.movielist.data.nextmovies.datasource.local
+
+import com.moises.movielist.domain.nextmovies.model.NextMovie
 
 interface NextMoviesLocalDataSource {
-
-    fun getAllNextMoviesFromDatabase()
+    suspend fun getAllNextMoviesFromDatabase() : List<NextMovie>
+    suspend fun saveNextMoviesToDatabase(nextMovies : List<NextMovie>)
 }

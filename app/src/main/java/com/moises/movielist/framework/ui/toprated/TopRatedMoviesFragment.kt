@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.moises.movielist.R
 import com.moises.movielist.framework.presentation.toprated.TopRatedMoviesViewModel
 
@@ -20,8 +20,10 @@ class TopRatedMoviesFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        topRatedMoviesViewModel =
-                ViewModelProviders.of(this).get(TopRatedMoviesViewModel::class.java)
+
+        topRatedMoviesViewModel = ViewModelProvider(this)
+            .get(TopRatedMoviesViewModel::class.java)
+
         val root = inflater.inflate(R.layout.fragment_top_rated_movies, container, false)
         val textView: TextView = root.findViewById(R.id.text_notifications)
         topRatedMoviesViewModel.text.observe(viewLifecycleOwner, Observer {

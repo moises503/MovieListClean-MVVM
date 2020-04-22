@@ -1,6 +1,9 @@
 package com.moises.movielist.data.toprated.datasource.local
 
-interface TopratedMoviesLocalDataSource {
+import com.moises.movielist.domain.toprated.model.TopRatedMovie
 
-    fun getAllPopularMoviesFromDatabase()
+
+interface TopRatedMoviesLocalDataSource {
+    suspend fun getAllTopRatedMoviesFromDatabase() : List<TopRatedMovie>
+    suspend fun saveTopRatedMoviesToDatabase(topratedMovies : List<TopRatedMovie>)
 }

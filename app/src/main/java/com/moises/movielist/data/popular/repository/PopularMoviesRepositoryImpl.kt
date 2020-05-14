@@ -5,13 +5,15 @@ import com.moises.movielist.data.popular.datasource.remote.PopularMoviesRemoteDa
 import com.moises.movielist.domain.popular.exception.PopularMoviesNotFoundException
 import com.moises.movielist.domain.popular.model.Movie
 import com.moises.movielist.domain.popular.repository.PopularMoviesRepository
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.withContext
 
 class PopularMoviesRepositoryImpl(
     private val popularMoviesLocalDataSource: PopularMoviesLocalDataSource,
     private val popularMoviesRemoteDataSource: PopularMoviesRemoteDataSource
 ) : PopularMoviesRepository {
 
-    override suspend fun getAllPopularMovies(): List<Movie> {
+    override suspend fun getAllPopularMovies(): List<Movie> = withContext(IO) {
 
         val localPopularMovies = popularMoviesLocalDataSource.getAllPopularMoviesFromDatabase()
 
@@ -28,6 +30,6 @@ class PopularMoviesRepositoryImpl(
             popularMoviesLocalDataSource.savePopularMoviesToDatabase(remotePopularMovies)
         }
 
-        return remotePopularMovies ?: localPopularMovies
+        remotePopularMovies ?: localPopularMovies
     }
 }

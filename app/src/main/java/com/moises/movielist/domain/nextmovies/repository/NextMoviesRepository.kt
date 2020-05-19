@@ -1,7 +1,8 @@
 package com.moises.movielist.domain.nextmovies.repository
 
-import com.moises.movielist.domain.popular.model.Movie
+import com.moises.movielist.domain.nextmovies.model.NextMovie
 
 interface NextMoviesRepository {
-    fun getAllNextMovies() : List<Movie>
+    suspend fun getAllNextMovies() : List<NextMovie>
 }
+

@@ -7,16 +7,21 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
+import com.moises.movielist.BR
 import com.moises.movielist.R
 import com.moises.movielist.core.arch.ScreenState
 import com.moises.movielist.domain.popular.model.Movie
+import com.moises.movielist.core.ui.GenericDataBindingAdapter
 import com.moises.movielist.framework.presentation.popular.PopularMoviesScreenState
 import com.moises.movielist.framework.presentation.popular.PopularMoviesViewModel
+import kotlinx.android.synthetic.main.fragment_popular_movies.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PopularMoviesFragment : Fragment() {
 
     private val popularMoviesViewModel: PopularMoviesViewModel by viewModel()
+    private lateinit var popularMoviesAdapter: GenericDataBindingAdapter<Movie>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +38,20 @@ class PopularMoviesFragment : Fragment() {
             Observer { screenState ->
                 renderScreenState(screenState)
             })
+        bindViews()
+    }
+
+    private fun bindViews() {
+        popularMoviesAdapter =
+            GenericDataBindingAdapter(
+                BR.movie,
+                R.layout.popular_movie_element
+            )
+        rvPopularMovies?.apply {
+            adapter = popularMoviesAdapter
+            layoutManager = GridLayoutManager(context, 2)
+            setHasFixedSize(true)
+        }
     }
 
     private fun renderScreenState(screenState: ScreenState<PopularMoviesScreenState>) {
@@ -51,18 +70,20 @@ class PopularMoviesFragment : Fragment() {
     }
 
     private fun showLoader() {
-        showError("Mostrando loader")
+        pbPopularMovies.visibility = View.VISIBLE
     }
 
     private fun hideLoader() {
-        showError("Oculando loader")
+        pbPopularMovies.visibility = View.GONE
     }
 
-    private fun showError(message : String){
+    private fun showError(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
     private fun showMovies(list: List<Movie>) {
-        Toast.makeText(requireContext(), "Total de películas: ${list.size}", Toast.LENGTH_LONG).show()
+        popularMoviesAdapter.setItems(
+            list.toMutableList()
+        )
     }
 }

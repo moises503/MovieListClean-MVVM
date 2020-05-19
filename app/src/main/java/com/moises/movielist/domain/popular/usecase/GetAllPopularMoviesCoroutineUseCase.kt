@@ -1,18 +1,16 @@
 package com.moises.movielist.domain.popular.usecase
 
 import com.moises.movielist.core.arch.NullParametersException
-import com.moises.movielist.core.arch.UseCase
+import com.moises.movielist.core.arch.CoroutineUseCase
 import com.moises.movielist.domain.popular.model.Movie
 import com.moises.movielist.domain.popular.repository.PopularMoviesRepository
 
-class GetAllPopularMoviesUseCase(private val popularMoviesRepository: PopularMoviesRepository) :
-    UseCase<Unit, List<Movie>>() {
+class GetAllPopularMoviesCoroutineUseCase(private val popularMoviesRepository: PopularMoviesRepository) :
+    CoroutineUseCase<Unit, List<Movie>>() {
 
-    override suspend fun executeWithCoroutines(params: Unit?): List<Movie> {
+    override suspend fun execute(params: Unit?): List<Movie> {
         params?.let {
             return popularMoviesRepository.getAllPopularMovies()
-        } ?: let {
-            throw NullParametersException()
-        }
+        } ?: throw NullParametersException()
     }
 }

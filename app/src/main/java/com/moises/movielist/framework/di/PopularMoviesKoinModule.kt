@@ -6,7 +6,7 @@ import com.moises.movielist.data.popular.repository.PopularMoviesRepositoryImpl
 import com.moises.movielist.database.MoviesDatabase
 import com.moises.movielist.database.dao.PopularMoviesDao
 import com.moises.movielist.domain.popular.repository.PopularMoviesRepository
-import com.moises.movielist.domain.popular.usecase.GetAllPopularMoviesUseCase
+import com.moises.movielist.domain.popular.usecase.GetAllPopularMoviesCoroutineUseCase
 import com.moises.movielist.framework.datasource.popular.local.PopularMoviesLocalDataSourceImpl
 import com.moises.movielist.framework.datasource.popular.mapper.FromMovieItemToMovie
 import com.moises.movielist.framework.datasource.popular.mapper.FromMovieToPopularMoviesEntity
@@ -47,7 +47,7 @@ fun providesPopularMoviesRepository(
     PopularMoviesRepositoryImpl(popularMoviesLocalDataSource, popularMoviesRemoteDataSource)
 
 fun providesGetAllPopularMoviesUseCase(popularMoviesRepository: PopularMoviesRepository) :
-        GetAllPopularMoviesUseCase = GetAllPopularMoviesUseCase(popularMoviesRepository)
+        GetAllPopularMoviesCoroutineUseCase = GetAllPopularMoviesCoroutineUseCase(popularMoviesRepository)
 
 
 val popularMoviesKoinModule = module {

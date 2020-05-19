@@ -6,7 +6,7 @@ import com.moises.movielist.data.nextmovies.repository.NextMoviesRepositoryImpl
 import com.moises.movielist.database.MoviesDatabase
 import com.moises.movielist.database.dao.NextMoviesDao
 import com.moises.movielist.domain.nextmovies.repository.NextMoviesRepository
-import com.moises.movielist.domain.nextmovies.usecase.GetAllNextMoviesUseCase
+import com.moises.movielist.domain.nextmovies.usecase.GetAllNextMoviesCoroutineUseCase
 import com.moises.movielist.framework.dasource.nextmovies.local.NextMoviesLocalDataSourceImpl
 import com.moises.movielist.framework.dasource.nextmovies.mapper.FromNextMovieItemToNextMovie
 import com.moises.movielist.framework.dasource.nextmovies.mapper.FromNextMovieToNextMoviesEntity
@@ -48,7 +48,7 @@ fun providesNextMoviesRepository(
     NextMoviesRepositoryImpl(nextMoviesLocalDataSource, nextMoviesRemoteDataSource)
 
 fun providesGetAllNextMoviesUseCase(nextMoviesRepository: NextMoviesRepository) :
-        GetAllNextMoviesUseCase = GetAllNextMoviesUseCase(nextMoviesRepository)
+        GetAllNextMoviesCoroutineUseCase = GetAllNextMoviesCoroutineUseCase(nextMoviesRepository)
 
 
 val nextMoviesKoinModule = module {

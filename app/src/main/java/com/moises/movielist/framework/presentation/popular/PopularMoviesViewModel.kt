@@ -5,12 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moises.movielist.core.arch.ScreenState
-import com.moises.movielist.domain.popular.usecase.GetAllPopularMoviesUseCase
+import com.moises.movielist.domain.popular.usecase.GetAllPopularMoviesCoroutineUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 class PopularMoviesViewModel(
-    private val getAllPopularMoviesUseCase: GetAllPopularMoviesUseCase
+    private val getAllPopularMoviesUseCase: GetAllPopularMoviesCoroutineUseCase
 ) : ViewModel() {
 
     private lateinit var _popularMoviesScreenState: MutableLiveData<ScreenState<PopularMoviesScreenState>>
@@ -32,7 +32,7 @@ class PopularMoviesViewModel(
         viewModelScope.launch(coroutineExceptionHandler) {
             _popularMoviesScreenState.value = ScreenState.Loading
             val popularMoviesResult =
-                runCatching { getAllPopularMoviesUseCase.executeWithCoroutines(Unit) }
+                runCatching { getAllPopularMoviesUseCase.execute(Unit) }
             popularMoviesResult.onSuccess { popularMoviesList ->
                 _popularMoviesScreenState.value =
                     ScreenState.Render(PopularMoviesScreenState.Movies(popularMoviesList))

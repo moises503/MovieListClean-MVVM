@@ -5,41 +5,40 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moises.movielist.core.arch.ScreenState
-import com.moises.movielist.domain.toprated.usecase.GetAllTopRatedMoviesUseCase
-import com.moises.movielist.framework.presentation.popular.PopularMoviesScreenState
+import com.moises.movielist.domain.toprated.usecase.GetAllTopRatedMoviesCoroutineUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 
 class TopRatedMoviesViewModel(
-    private val getAllTopRatedMoviesUseCase: GetAllTopRatedMoviesUseCase
+    private val getAllTopRatedMoviesUseCase: GetAllTopRatedMoviesCoroutineUseCase
 ) : ViewModel() {
 
-    private lateinit var _topratedMoviesScreenState: MutableLiveData<ScreenState<TopRatedMoviesScreenState>>
+    private lateinit var _topRatedMoviesScreenState: MutableLiveData<ScreenState<TopRatedMoviesScreenState>>
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
     }
 
-    val topratedMoviesScreenState: LiveData<ScreenState<TopRatedMoviesScreenState>>
+    val topRatedMoviesScreenState: LiveData<ScreenState<TopRatedMoviesScreenState>>
         get() {
-            if (!::_topratedMoviesScreenState.isInitialized) {
-                _topratedMoviesScreenState = MutableLiveData()
+            if (!::_topRatedMoviesScreenState.isInitialized) {
+                _topRatedMoviesScreenState = MutableLiveData()
                 retrieveAllTopRatedMovies()
             }
-            return _topratedMoviesScreenState
+            return _topRatedMoviesScreenState
         }
 
     private fun retrieveAllTopRatedMovies() {
         viewModelScope.launch(coroutineExceptionHandler) {
-            _topratedMoviesScreenState.value = ScreenState.Loading
-            val topratedMoviesResult =
-                runCatching { getAllTopRatedMoviesUseCase.executeWithCoroutines(Unit) }
-            topratedMoviesResult.onSuccess { topratedMoviesList ->
-                _topratedMoviesScreenState.value =
+            _topRatedMoviesScreenState.value = ScreenState.Loading
+            val topRatedMoviesResult =
+                runCatching { getAllTopRatedMoviesUseCase.execute(Unit) }
+            topRatedMoviesResult.onSuccess { topratedMoviesList ->
+                _topRatedMoviesScreenState.value =
                     ScreenState.Render(TopRatedMoviesScreenState.Movies(topratedMoviesList))
             }.onFailure { error ->
-                _topratedMoviesScreenState.value = ScreenState.Render(
+                _topRatedMoviesScreenState.value = ScreenState.Render(
                     TopRatedMoviesScreenState.Error(
                         error.localizedMessage ?: "Ha ocurrido un error"
                     )

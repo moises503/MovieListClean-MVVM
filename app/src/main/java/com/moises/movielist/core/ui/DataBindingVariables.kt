@@ -1,3 +1,3 @@
-package uabjo.drti.eleccion.modules.common.framework
+package com.moises.movielist.core.ui
 
 data class DataBindingVariables(val variableId : Int, val variableValue : Any)

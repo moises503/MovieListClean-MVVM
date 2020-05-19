@@ -1,4 +1,4 @@
-package uabjo.drti.eleccion.modules.common.framework
+package com.moises.movielist.core.ui
 
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView

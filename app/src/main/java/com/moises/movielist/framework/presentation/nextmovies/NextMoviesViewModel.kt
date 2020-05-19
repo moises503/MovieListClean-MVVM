@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moises.movielist.core.arch.ScreenState
-import com.moises.movielist.domain.nextmovies.usecase.GetAllNextMoviesUseCase
+import com.moises.movielist.domain.nextmovies.usecase.GetAllNextMoviesCoroutineUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 
 class NextMoviesViewModel(
-    private val getAllNextMoviesUseCase: GetAllNextMoviesUseCase
+    private val getAllNextMoviesUseCase: GetAllNextMoviesCoroutineUseCase
 ) : ViewModel() {
 
     private lateinit var _nextMoviesScreenState: MutableLiveData<ScreenState<NextMoviesScreenState>>
@@ -33,7 +33,7 @@ class NextMoviesViewModel(
         viewModelScope.launch(coroutineExceptionHandler) {
             _nextMoviesScreenState.value = ScreenState.Loading
             val nextMoviesResult =
-                runCatching { getAllNextMoviesUseCase.executeWithCoroutines(Unit) }
+                runCatching { getAllNextMoviesUseCase.execute(Unit) }
             nextMoviesResult.onSuccess { nextMoviesList ->
                 _nextMoviesScreenState.value =
                     ScreenState.Render(NextMoviesScreenState.NextMovies (nextMoviesList))

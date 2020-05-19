@@ -12,7 +12,7 @@ import com.moises.movielist.BR
 import com.moises.movielist.R
 import com.moises.movielist.core.arch.ScreenState
 import com.moises.movielist.domain.nextmovies.model.NextMovie
-import com.moises.movielist.framework.GenericDataBindingAdapter
+import com.moises.movielist.core.ui.GenericDataBindingAdapter
 import com.moises.movielist.framework.presentation.nextmovies.NextMoviesScreenState
 import com.moises.movielist.framework.presentation.nextmovies.NextMoviesViewModel
 import kotlinx.android.synthetic.main.fragment_next_movies.*
@@ -22,7 +22,6 @@ class NextMoviesFragment : Fragment() {
 
     private val nextMoviesViewModel: NextMoviesViewModel by viewModel()
     private lateinit var nextMoviesAdapter: GenericDataBindingAdapter<NextMovie>
-    private var nextmovies : MutableList<NextMovie> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,14 +39,15 @@ class NextMoviesFragment : Fragment() {
             Observer { screenState ->
                 renderScreenState(screenState)
             })
-        recyclerBind()
+        bindViews()
     }
 
-    fun recyclerBind() {
+    private fun bindViews() {
         nextMoviesAdapter =
             GenericDataBindingAdapter(
                 BR.nextmovie,
-                R.layout.next_movie_element)
+                R.layout.next_movie_element
+            )
         rvNextMovies?.apply {
             adapter = nextMoviesAdapter
 
@@ -83,11 +83,8 @@ class NextMoviesFragment : Fragment() {
     }
 
     private fun showMovies(list: List<NextMovie>) {
-        nextmovies.clear()
-        nextmovies.addAll(list.toMutableList())
-
         nextMoviesAdapter.setItems(
-            nextmovies
+            list.toMutableList()
         )
     }
 }

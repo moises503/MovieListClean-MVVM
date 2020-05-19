@@ -6,7 +6,7 @@ import com.moises.movielist.data.toprated.repository.TopRatedMoviesRepositoryImp
 import com.moises.movielist.database.MoviesDatabase
 import com.moises.movielist.database.dao.TopRatedMoviesDao
 import com.moises.movielist.domain.toprated.repository.TopRatedMoviesRepository
-import com.moises.movielist.domain.toprated.usecase.GetAllTopRatedMoviesUseCase
+import com.moises.movielist.domain.toprated.usecase.GetAllTopRatedMoviesCoroutineUseCase
 import com.moises.movielist.framework.datasource.toprated.local.TopRatedMoviesLocalDataSourceImpl
 import com.moises.movielist.framework.datasource.toprated.mapper.FromTopRatedMovieItemToTopRatedMovie
 import com.moises.movielist.framework.datasource.toprated.mapper.FromTopRatedMovieToTopRatedMoviesEntity
@@ -48,7 +48,7 @@ fun providesTopRatedMoviesRepository(
     TopRatedMoviesRepositoryImpl(topratedMoviesLocalDataSource, topratedMoviesRemoteDataSource)
 
 fun providesGetAllTopRatedMoviesUseCase(topratedMoviesRepository: TopRatedMoviesRepository) :
-        GetAllTopRatedMoviesUseCase = GetAllTopRatedMoviesUseCase(topratedMoviesRepository)
+        GetAllTopRatedMoviesCoroutineUseCase = GetAllTopRatedMoviesCoroutineUseCase(topratedMoviesRepository)
 
 
 val topratedMoviesKoinModule = module {

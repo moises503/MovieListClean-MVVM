@@ -1,4 +1,4 @@
-package com.moises.movielist.framework.ui
+package com.moises.movielist.core.ui
 
 
 import android.graphics.drawable.Drawable
@@ -16,6 +16,4 @@ object UiUtil {
                 .load(IMAGE_URL + imageUrl)
                 .error(placeholder)
                 .into(view)
-
-
 }

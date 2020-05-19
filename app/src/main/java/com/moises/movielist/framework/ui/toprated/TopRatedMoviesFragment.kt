@@ -12,7 +12,7 @@ import com.moises.movielist.BR
 import com.moises.movielist.R
 import com.moises.movielist.core.arch.ScreenState
 import com.moises.movielist.domain.toprated.model.TopRatedMovie
-import com.moises.movielist.framework.GenericDataBindingAdapter
+import com.moises.movielist.core.ui.GenericDataBindingAdapter
 import com.moises.movielist.framework.presentation.toprated.TopRatedMoviesScreenState
 import com.moises.movielist.framework.presentation.toprated.TopRatedMoviesViewModel
 import kotlinx.android.synthetic.main.fragment_top_rated_movies.*
@@ -20,9 +20,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TopRatedMoviesFragment : Fragment() {
 
-    private val topratedMoviesViewModel: TopRatedMoviesViewModel by viewModel()
-    private lateinit var topratedMoviesAdapter: GenericDataBindingAdapter<TopRatedMovie>
-    private var topratedmovies : MutableList<TopRatedMovie> = mutableListOf()
+    private val topRatedMoviesViewModel: TopRatedMoviesViewModel by viewModel()
+    private lateinit var topRatedMoviesAdapter: GenericDataBindingAdapter<TopRatedMovie>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,29 +34,15 @@ class TopRatedMoviesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        topratedMoviesViewModel.topratedMoviesScreenState.observe(
+        topRatedMoviesViewModel.topRatedMoviesScreenState.observe(
             viewLifecycleOwner,
             Observer { screenState ->
                 renderScreenState(screenState)
             })
-        recyclerBind()
+        bindViews()
     }
 
-    fun recyclerBind() {
 
-        topratedMoviesAdapter =
-            GenericDataBindingAdapter(BR.topratedmovie,
-                R.layout.toprated_movie_element)
-        rvTopRatedMovies?.apply {
-            adapter = topratedMoviesAdapter
-
-            layoutManager = GridLayoutManager(context,2)
-            setHasFixedSize(true)
-        }
-
-
-
-    }
     private fun renderScreenState(screenState: ScreenState<TopRatedMoviesScreenState>) {
         when (screenState) {
             ScreenState.Loading -> showLoader()
@@ -74,23 +59,34 @@ class TopRatedMoviesFragment : Fragment() {
     }
 
     private fun showLoader() {
-        pbTopRatedMovies.visibility=View.VISIBLE
+        pbTopRatedMovies.visibility = View.VISIBLE
     }
 
     private fun hideLoader() {
-        pbTopRatedMovies.visibility=View.GONE
+        pbTopRatedMovies.visibility = View.GONE
     }
 
-    private fun showError(message : String){
+    private fun showError(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
     private fun showMovies(list: List<TopRatedMovie>) {
-        topratedmovies.clear()
-        topratedmovies.addAll(list.toMutableList())
-
-        topratedMoviesAdapter.setItems(
-            topratedmovies
+        topRatedMoviesAdapter.setItems(
+            list.toMutableList()
         )
-     }
+    }
+
+    private fun bindViews() {
+        topRatedMoviesAdapter =
+            GenericDataBindingAdapter(
+                BR.topratedmovie,
+                R.layout.toprated_movie_element
+            )
+        rvTopRatedMovies?.apply {
+            adapter = topRatedMoviesAdapter
+
+            layoutManager = GridLayoutManager(context, 2)
+            setHasFixedSize(true)
+        }
+    }
 }
